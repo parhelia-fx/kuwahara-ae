@@ -1,0 +1,21 @@
+# Binaries
+bin/
+
+# Intermediate resource files
+*.rr
+*.rrc
+
+# Shader binaries
+src/shaders/*.spv
+
+# ols
+ols.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store

@@ -93,13 +93,13 @@ float4 get_dominant_orientation(float4 tensor) {
 
     float2 v;
     if (jxy_strength > 0.0) {
-        v = normalize((float2) { -tensor.z, tensor.x - lambda1 });
-    } {
-        v = { 0.0, 1.0 };
+        v = normalize(float2(-tensor.z, tensor.x - lambda1));
+    } else {
+        v = float2(0.0, 1.0);
     }
 
     // v = normalize(v);
-    return (float4) {v.x, v.y, lambda1, lambda2};
+    return float4(v.x, v.y, lambda1, lambda2);
 }
 
 float gaussian_weight(float distance, float sigma) {
@@ -126,7 +126,7 @@ SectorInfo calculate_sector_info(float2 uv, float angle, float2x2 anisotropy_mat
     static const float ANGLE_VAL = PI / SECTOR_COUNT;
     for (float r = 1.0; r <= radius; r += 1.0) {
         for (float a = -ANGLE_VAL; a <= ANGLE_VAL; a += ANGLE_VAL * 0.5) {
-            const float2 offset = mul(r * (float2) { cos(angle + a), sin(angle + a) }, anisotropy_mat);
+            const float2 offset = mul(r * float2(cos(angle + a), sin(angle + a)), anisotropy_mat);
 
             const float2 pos = uv + offset;
             if (pos.x >= (float)pc.width || pos.x < 0 || pos.y >= (float)pc.height || pos.y < 0) {
@@ -147,7 +147,7 @@ SectorInfo calculate_sector_info(float2 uv, float angle, float2x2 anisotropy_mat
 
     sector.average /= total_weight;
     const float4 variance = weighted_square_sum / total_weight - sector.average * sector.average;
-    sector.variance = dot(variance.xyz, (float3) { 0.299, 0.587, 0.114 });
+    sector.variance = dot(variance.xyz, float3(0.299, 0.587, 0.114));
 
     return sector;
 }
@@ -171,7 +171,7 @@ void main(uint3 thread_id: SV_DispatchThreadID) {
     const float scale_x = ALPHA / an_a;
     const float scale_y = an_a / ALPHA;
 
-    const float2x2 anisotropy_mat = mul((float2x2) { orientation.x, -orientation.y, orientation.y, orientation.x }, (float2x2) {scale_x, 0.0, 0.0, scale_y});
+    const float2x2 anisotropy_mat = mul(float2x2(orientation.x, -orientation.y, orientation.y, orientation.x), float2x2(scale_x, 0.0, 0.0, scale_y));
 
     SectorInfo sectors[SECTOR_COUNT];
     for (uint i = 0; i < SECTOR_COUNT; i++) {

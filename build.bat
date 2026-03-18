@@ -16,7 +16,7 @@ nvcc -c src/cuda_stub.cu -o bin/cuda_stub.o
 lib /OUT:bin/cuda_stub.lib bin/cuda_stub.o
 
 REM shaders
-slangc -force-glsl-scalar-layout -matrix-layout-column-major -fp-mode fast -Omaximal -gnone -target spirv effect.slang -o effect.spv
+slangc -force-glsl-scalar-layout -matrix-layout-column-major -fp-mode fast -Omaximal -gnone -target spirv src/shaders/effect.slang -o src/shaders/effect.spv
 
 REM build aex
 odin build src -build-mode:dll -o:speed -resource:Plugin.rc -out:bin/KuwaharaFilter.aex

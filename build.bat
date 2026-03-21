@@ -2,7 +2,7 @@
 
 cd /d "%~dp0"
 
-call vcvars64.bat >nul
+mkdir bin
 
 REM rc file
 cl /I "AAE_SDK\Headers" /EP "Plugin.r" > "bin\Plugin.rr"
